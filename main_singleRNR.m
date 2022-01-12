@@ -1,10 +1,10 @@
 clear all
 
-Len_train = 3000;
+Len_train = 5000;
 Len_test = 1000;
 Len_init = 100;
 
-load('NARMA10data');
+load('NARMA10data3');
 
 %%%  eRNR parameters
 N = 400;
@@ -39,27 +39,30 @@ for t = 1:(Len_train+Len_test) %% post-neuron rotation
     sk(:,t) = circshift(ak(:,t),t-1);
 end
 
+
 %% training
+ahead = 0;
+
 reg = 1e-10;  % regularization coefficient
-target = data(Len_init+2:Len_train+1)';
+target = data(Len_init+1+ahead:Len_train+ahead)';
 trainingState = sk(:,Len_init+1:Len_train);
 
 Wout = (target*trainingState' / (trainingState*trainingState' + reg*eye(N)))';
 
 %% Testing
 
-testTarget = data(Len_train+1:Len_test+Len_train);
+testTarget = data(Len_train+1+ahead:Len_test+Len_train+ahead);
 
 testingStates = sk(:,Len_train+1:Len_test+Len_train);
 
 output = testingStates'*Wout; 
 
 %% Result
-NRMSE = sqrt(mean((output(Len_init+1:end-1)-testTarget(Len_init+2:end)).^2)./var(testTarget(Len_init+2:end)));
+NRMSE = sqrt(mean((output(Len_init+1:end)-testTarget(Len_init+1:end)).^2)./var(testTarget(Len_init+1:end)));
 disp(['NRMSE = ' num2str(NRMSE)])
 
 figure(1);
-plot(testTarget(2:end), 'b' );
+plot(testTarget(1:end), 'b' );
 hold on;
 plot( output', 'r' );
 hold off;
