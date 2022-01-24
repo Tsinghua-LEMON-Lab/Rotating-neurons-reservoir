@@ -1,6 +1,6 @@
 clear all
 
-Len_train = 5000;
+Len_train = 3000;
 Len_test = 1000;
 Len_init = 100;
 
@@ -16,13 +16,13 @@ sk = SCR_par(u(1:Len_train+Len_test),para); %% eRNR
 
 %% training
 reg = 1e-10; 
-target = data(Len_init+1:Len_train)';
+target = data(Len_init+2:Len_train+1)';
 trainingState = sk(:,Len_init+1:Len_train); 
 warning('off');
 Wout = (target*trainingState' / (trainingState*trainingState' + reg*eye(para.resSize*para.Nres)))';
 %% Testing
 
-testTarget = data(Len_train+1:Len_test+Len_train);
+testTarget = data(Len_train+2:Len_test+Len_train+1);
 
 testingStates = sk(:,Len_train+1:Len_test+Len_train);
 
