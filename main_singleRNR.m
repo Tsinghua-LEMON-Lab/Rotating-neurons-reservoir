@@ -1,10 +1,10 @@
 clear all
 
-Len_train = 5000;
+Len_train = 3000;
 Len_test = 1000;
 Len_init = 100;
 
-load('NARMA10data3');
+load('NARMA10data');
 
 %%%  eRNR parameters
 N = 400;
@@ -41,7 +41,7 @@ end
 
 
 %% training
-ahead = 0;
+ahead = 1;
 
 reg = 1e-10;  % regularization coefficient
 target = data(Len_init+1+ahead:Len_train+ahead)';
